@@ -202,6 +202,21 @@ This returns metrics (DR, traffic, language), status, price, placement examples,
 
 ### Step 4. Buying Guest Posts
 
+**IMPORTANT — User confirmation required before any purchase.**
+
+Before executing a purchase, the agent MUST:
+
+1. Call `get_user_info` to retrieve the current account balance.
+2. Call `get_site_info site_id=SITE_ID` to retrieve the price for the selected donor site.
+3. Present the following information to the user:
+   - Site URL and price
+   - Current account balance
+   - Remaining balance after purchase (balance - price)
+4. Ask the user for **explicit confirmation** to proceed with the purchase.
+5. Only execute `purchase_placement` after receiving the user's confirmation.
+
+If the user does not confirm, do NOT proceed with the purchase.
+
 Once you have:
 - `PROJECT_ID`
 - `SITE_ID` (from search results)
@@ -250,8 +265,24 @@ npx mcporter call serpzilla.get_project_placements project_id=PROJECT_ID
 
 ### Step 5. Managing Purchased Placements
 
+**IMPORTANT — User confirmation required before any placement action.**
+
+Many placement actions have financial implications:
+- `approve_seo` / `approve_content_seo` — releases funds to the publisher
+- `cancel_seo` / `cancel_from_*` — may trigger refunds or forfeiture
+- `terminate_seo` — permanently removes an approved backlink
+- `approve_from_arbitration_seo` — resolves a dispute in your favour
+
+Before executing any `perform_placement_action`, the agent MUST:
+
+1. Inform the user about the action being taken and its financial impact.
+2. Ask the user for **explicit confirmation** to proceed.
+3. Only execute the action after receiving the user's confirmation.
+
+If the user does not confirm, do NOT proceed with the action.
+
 After you purchase a placement, its lifecycle is managed through a set of statuses and transitions. 
-You can perform specific actions to influence the placement’s progress, request changes, cancel orders, 
+You can perform specific actions to influence the placement's progress, request changes, cancel orders, 
 or handle edge cases like billing or failed purchases.
 
 All actions are executed using the MCP tool:
