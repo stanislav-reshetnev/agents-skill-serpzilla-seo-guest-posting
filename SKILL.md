@@ -14,7 +14,12 @@ metadata:
     "openclaw":
       {
         "emoji": "🦖",
-        "requires": { "bins": ["mcporter"] },
+        "requires":
+          {
+            "bins": ["mcporter"],
+            "env": ["SERPZILLA_LOGIN", "SERPZILLA_API_TOKEN"],
+          },
+        "primaryEnv": "SERPZILLA_API_TOKEN",
       },
   }
 ---
