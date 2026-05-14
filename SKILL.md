@@ -70,7 +70,7 @@ and SERPZILLA_API_TOKEN (the API token received by the user).
 Run the following command, replacing XXX and YYY with user's values:
 
 ```bash
-npx mcporter config add serpzilla --stdio "docker run -i --rm --env SERPZILLA_LOGIN=XXX --env SERPZILLA_API_TOKEN=YYY stanislavusbest/serpzilla-mcp-stdio-server:latest"
+npx mcporter config add serpzilla --stdio "docker run -i --rm --env SERPZILLA_LOGIN=XXX --env SERPZILLA_API_TOKEN=YYY stanislavusbest/serpzilla-mcp-stdio-server:v1.0.7"
 ```
 
 ### 3. Verify the configuration
