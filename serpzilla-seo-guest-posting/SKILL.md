@@ -1,13 +1,13 @@
 ---
 name: serpzilla-seo-guest-posting
-description: Buy SEO guest posts and link insertions on trusted donor sites via the Serpzilla platform — create projects, search and filter donors by DR/traffic/price/language, upload articles, purchase placements, and manage their lifecycle. Use whenever the user wants to build backlinks, find donor sites for guest posting, buy or approve link placements, or do anything with Serpzilla, even if they don't mention it by name.
+description: Buy SEO guest posts and link insertions on trusted donor sites via the Serpzilla platform — create projects, search and filter donors by DR/traffic/price/language, upload articles or URLs with anchor texts, purchase placements, and manage their lifecycle. Use whenever the user wants to build backlinks, find donor sites for guest posting, buy or approve link placements, or do anything with Serpzilla, even if they don't mention it by name.
 ---
 
 # Serpzilla SEO Guest Posting
 
 ## Overview
 
-This skill guides an agent through SEO link-building on the [Serpzilla](https://serpzilla.com) platform: creating projects for promoted websites, searching donor sites, uploading articles, buying placements (guest posts and link insertions), and managing the placement lifecycle. Interaction with the platform happens entirely through the **Serpzilla MCP server**, which the user connects themselves.
+This skill guides an agent through SEO link-building on the [Serpzilla](https://serpzilla.com) platform: creating projects for promoted websites, searching donor sites, uploading articles or URLs with anchor texts, buying placements (guest posts and link insertions), and managing the placement lifecycle. Interaction with the platform happens entirely through the **Serpzilla MCP server**, which the user connects themselves.
 
 ## Prerequisites
 
@@ -31,7 +31,7 @@ Understanding these entities makes the rest of the workflow make sense:
 - **Project** — a container for everything below. Created for a specific domain, though other domains can also be promoted inside it.
 - **URL** — the promoted page that placements link back to. Linked to a project.
 - **Article** — a full HTML article uploaded by the advertiser for the `news` format. Goes through moderation, so it has a status. Linked to a project.
-- **Text** — the anchor text used in the link. When an Article is uploaded, the Text and URL are derived automatically. Linked to a project.
+- **Text** — the anchor text used in the link. When an Article is uploaded, the Text and URL are derived automatically. URLs and Texts can also be added manually via `add_texts` — this is how you supply additional promoted pages and anchor texts for formats where the webmaster writes the content (`review`, `link`, `archive`).
 - **Content** — a general term covering both Article and Text, each with its own status transitions.
 - **Placement** — the purchased guest post / link insertion. Moves through a status workflow. Linked to a Text and a URL.
 
@@ -91,6 +91,42 @@ get_project_content_list(project_id=PROJECT_ID)
 
 For `review`, `link`, and `archive` formats, **no article is needed** — the purchase uses `url_id` and `text_id`, and the webmaster writes the surrounding content.
 
+#### Adding URLs with anchor texts (`add_texts`)
+
+For formats where the webmaster writes the content, you provide the promoted URL and anchor text via `add_texts`. This is how you add pages beyond the auto-generated domain URL, and anchor texts beyond the default one.
+
+```
+add_texts(
+  project_id=PROJECT_ID,
+  urls_texts=[
+    {
+      url: "https://example.com/blog/seo-guide",
+      texts: [
+        {text: "See our #a#complete SEO guide#/a# for details"},
+        {text: "Learn more about #a#link building#/a# strategies"}
+      ]
+    },
+    {
+      url: "https://example.com/services/",
+      texts: [{text: "Professional #a#SEO services#/a#"}]
+    }
+  ]
+)
+```
+
+- `url` — the full promotion URL, including `https://`.
+- `texts[].text` — the anchor text. Use `#a#...#/a#` markup to mark which portion becomes the link. One URL can have multiple anchor texts (each becomes a separate `text_id`).
+- `keywords` (optional) — key phrases for the webmaster to target when writing content.
+
+The call returns `texts[]` with `urlId` and `textsList` (array of text IDs) for each URL, plus any `urlErrors` or `textErrors` if a URL or anchor was rejected by the validator.
+
+**When to use which:**
+
+| Need | Tool |
+|------|------|
+| Advertiser's full article (`news` format) | `add_article` |
+| Just URLs + anchor texts (`review` / `link` / `archive`) | `add_texts` |
+
 ### 3. Search for donor sites
 
 ```
@@ -131,7 +167,7 @@ Once you have the pieces:
 - `PROJECT_ID`
 - `SITE_ID` (from search results)
 - For `news`: an **approved** `article_id` and a `url_id`
-- For `review` / `link` / `archive`: a `url_id` and a `text_id`
+- For `review` / `link` / `archive`: a `url_id` and a `text_id` (obtained from `add_texts` or the auto-generated defaults from project creation)
 - `search_history_id` — always pass the **empty string** `""`
 
 Examples per format:
@@ -203,7 +239,7 @@ Run through this before buying — it catches almost every common failure:
 - [ ] `PROJECT_ID` known (created or found via `list_projects`)
 - [ ] For `news`: an article in `approved` status (`get_project_content_list`)
 - [ ] `SITE_ID` selected, with acceptable metrics (`get_site_info`)
-- [ ] `url_id` (and `text_id` for `review`/`link`/`archive`) known
+- [ ] `url_id` (and `text_id` for `review`/`link`/`archive`) known — add more via `add_texts` if needed
 - [ ] `search_history_id` set to `""`
 - [ ] Balance covers the price, and the user has explicitly confirmed
 
