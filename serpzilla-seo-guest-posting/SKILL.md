@@ -62,6 +62,30 @@ list_projects()
 
 This returns `projectsInGroupList[]`, where each entry has `id` (the `PROJECT_ID`), `domain`, `name`, and `firstUrlId` (the id of the auto-created URL — handy when you need a `url_id` quickly).
 
+All arguments are optional. Use them for pagination, sorting, and filtering:
+
+```
+# Page 2, 50 projects per page, newest first
+list_projects(page=2, limit=50, order_by="byCreatedAt", order_type="desc")
+
+# Only active projects, sorted by name
+list_projects(project_filter="isActive", order_by="byProjectName")
+
+# Fetch specific projects by ID
+list_projects(projects_ids=[123, 456])
+```
+
+| Argument | Values | Description |
+|----------|--------|-------------|
+| `page` | `1+` | Page number (starts at 1) |
+| `limit` | `20`, `50`, `100`, `250` | Projects per page |
+| `order_by` | `byProjectName`, `byLinksCount`, `byUrlsCount`, `byAutobuyersCount`, `byMonthlyBudget`, `byCreatedAt` | Sort field |
+| `order_type` | `asc`, `desc` | Sort direction |
+| `project_filter` | `all`, `isActive`, `isArchived`, `withErrors` | Status filter |
+| `projects_ids` | `[id, …]` | Filter by specific project IDs |
+
+> **Searching by name?** The API does not support substring search. Sort by `order_by="byProjectName"` and filter the results client-side, or use `projects_ids` if you know the IDs.
+
 ### 2. Prepare content
 
 For the `news` format you must upload an article **before** buying. The article is reviewed by Serpzilla moderators; only `approved` articles can be purchased.
