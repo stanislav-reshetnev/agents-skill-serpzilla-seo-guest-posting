@@ -10,7 +10,7 @@ Gemini CLI, and many others.
 
 | Skill | Description |
 |-------|-------------|
-| [`serpzilla-seo-guest-posting`](./serpzilla-seo-guest-posting) | Buy SEO guest posts and link insertions on trusted donor sites via the Serpzilla platform. |
+| [`serpzilla-seo-guest-posting`](skills/serpzilla-seo-guest-posting) | Buy SEO guest posts and link insertions on trusted donor sites via the Serpzilla platform. |
 
 ---
 
