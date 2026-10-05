@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "serpzilla-links": {
+      "type": "http",
+      "url": "https://mcp.serpzilla.com/mcp"
+    }
+  }
+}
+

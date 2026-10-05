@@ -1,0 +1,11 @@
+{
+  "name": "serpzilla-seo-guest-posting",
+  "displayName": "Serpzilla SEO Guest Posting and Link Insertions",
+  "version": "1.0.2",
+  "description": "Automate and manage SEO guest posting campaigns, find donor sites, and track backlinks using Serpzilla tools.",
+  "author": {
+    "name": "Serpzilla LTD",
+    "url": "https://serpzilla.com"
+  },
+  "license": "MIT"
+}

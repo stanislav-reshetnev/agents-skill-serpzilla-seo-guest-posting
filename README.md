@@ -1,4 +1,4 @@
-# Agents skill: Serpzilla SEO Guest-posting
+# Agents skill: Serpzilla SEO Guest-posting and Link Insertion
 
 A vendor-neutral home for **Agent Skills** — portable skill packages that follow the open
 [Agent Skills](https://agentskills.io) standard. Each skill is a folder containing a `SKILL.md`
