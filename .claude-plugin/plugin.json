@@ -8,5 +8,6 @@
     "url": "https://serpzilla.com"
   },
   "privacyPolicyUrl": "https://passport.serpzilla.com/doc/privacy",
+  "icon": "./icon.png",
   "license": "MIT"
 }
